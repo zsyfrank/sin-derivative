@@ -1,114 +1,39 @@
 #include<stdio.h>
-//#include<stdlib.h>
+#include<string.h>
 #include<math.h>
-double power(double x)//derivative of power function
+#include<stdlib.h>
+void tododerivative(double fx1,double fx2)
 {
-	double exp,der1,der2,y0,y1,y2,y3,y4,sum=0,dx=0.01,coeff;//y2-y1,y4-y3 are used to divided by dx to get derivatives
-	int num;//number of terms
-	printf("please input the number of terms like x^a(项数）\n");
-	scanf("%d",&num);
-	for(int j=1;j<=num;j++)
-	{
-		printf("please input the exponential（指数） of x\n");
-		scanf("%lf",&exp);
-		printf("please input the coefficient（系数） of it\n");
-		scanf("%lf",&coeff);
-		y0=pow(x,exp);
-		for(int i=0;i<=100;i++)
-		{
-			y1=pow(x-dx,exp);
-			y2=pow(x+dx,exp);
-			y3=pow(x-2*dx,exp);
-			y4=pow(x+2*dx,exp);
-			der2=(y4-y3)/(4*dx);
-			der1=(y2-y1)/(2*dx);
-			if(fabs(der1-der2)<=1e-6)//compare derivative1 and derivateive2 to ensure the accurence has been reduced to 1e-6
-			{
-				break;
-				}
-			else
-				dx=dx/10;
-		}
-		sum+=coeff*der1;
-	}
-	if(num==0)
-		sum=0;
-	printf("%lf\n",sum);
-	return sum;
+	double derivative;
+	derivative = (fx2-fx1)/1e-6;
+	printf("%lf",derivative);
 }
-double exp(double x)//derivative of exponential function
-{
-	double base,der1,der2,y0,y1,y2,y3,y4,sum=0,dx=0.01,coeff;
-	int num;
-	printf("please input the number of terms like a^x(项数）\n");
-	scanf("%d",&num);
-	if(num!=0)
-	{
-		for(int j=1;j<=num;j++)
-		{
-			printf("please input the base（底数） of x\n");
-			scanf("%lf",&base);
-			printf("please input the coefficient（系数） of it\n");
-			scanf("%lf",&coeff);
-			y0=pow(base,x);
-			for(int i=0;i<=100;i++)
-			{
-				y1=pow(base,x-dx);
-				y2=pow(base,x+dx);
-				y3=pow(base,x-2*dx);
-				y4=pow(base,x+2*dx);
-				der1=(y4-y3)/(4*dx);
-				der2=(y2-y1)/(2*dx);
-				printf("%lf\n",der1);
-				printf("%lf\n",der2);
-				if(fabs(der1-der2)<=1e-6)
-				{
-					break;
-				}
-				else
-					dx=dx/10;	
-			}
-			sum=sum+coeff*der1;
-		}
-	}
-	else
-		sum=0;
-	printf("%lf\n",sum);
-	return sum;
-}
-double log(double x)//derivative of logarithmic functions
-{
-	double base,sum=0,dx=0.01,coeff;
-	int num,j;
-	printf("please input the number of terms like log a x(项数）\n");
-	scanf("%d",&num);
-	if(num!=0)
-	{
-		for(j=1;j<=num;j++)
-		{
-			printf("please input the base（底数） of x\n");
-			scanf("%lf",&base);
-			printf("please input the coefficient（系数） of it\n");
-			scanf("%lf",&coeff);
-			sum=sum+coeff/(x*log(base));
-			printf("%lf\n",sum);
-		}
-	}
-	else
-	{
-		sum=0;
-	}
-	return sum;
-}
-
 int main()
 {
-	double a,b,c,x;
-	printf("please input the value of x（取值）\n") ;
+	double x,fx1,fx2;//fx1,fx1 is used to do the derivative
+	double exponent;
+	printf("the value of x is\n");
 	scanf("%lf",&x);
-	a=power(x);
-	b=exp(x);
-	c=log(x);
-	printf("%lf",a+b);
+	char function[] ="";//function[] is where we store the function we input
+	printf("please input the function\n");
+	scanf("%s",function);
+	if(strcmp(function,"sinx")==0)
+		fx1=sin(x);
+		fx2=sin(x+1e-6);
+		tododerivative(fx1,fx2);
+	if(strcmp(function,"cosx")==0)
+		fx1=cos(x);
+		fx2=cos(x+1e-6);
+		tododerivative(fx1,fx2);
+	if(strcmp(function,"logx")==0)
+		fx1=log(x);
+		fx2=log(x+1e-6);
+		tododerivative(fx1,fx2);
+	char *s1="x^";//s1 is used to judge whether the function we input is a power function
+	if(strncmp(function,s1,2)==0)
+		exponent=atof(function);
+		printf("%lf",atof(function));
+		fx1=pow(x,exponent);
+		fx2=pow(x+1e-6,exponent);
 	return 0;
 }
